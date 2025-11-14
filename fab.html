@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>First Atlantic Bank | Modern Digital Banking</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        :root {
+            --primary: #4A1E8A;
+            --primary-dark: #32145F;
+            --primary-light: #6B2FBF;
+            --secondary: #FF6B9D;
+            --accent: #00E5CC;
+            --text-light: #F0E6FF;
+            --text-muted: #B8A9D9;
+            --bg-dark: #1A1129;
+            --bg-card: #251A3D;
+            --success: #00D4AA;
+            --warning: #FFB74D;
+            --border-radius: 12px;
+            --transition: all 0.3s ease;
+            --shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: rgba(26, 17, 41, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(74, 30, 138, 0.3);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 24px;
+            color: var(--text-light);
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            background: linear-gradient(135deg, var(--primary-light), var(--secondary));
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 32px;
+        }
+
+        nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: var(--transition);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 16px;
+        }
+
+        .btn {
+            padding: 10px 24px;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            font-size: 15px;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text-light);
+            border: 1px solid var(--primary-light);
+        }
+
+        .btn-outline:hover {
+            background: rgba(107, 47, 191, 0.2);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-light), var(--secondary));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 160px 0 100px;
+            background: linear-gradient(135deg, var(--primary-dark), var(--bg-dark));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 70%, rgba(107, 47, 191, 0.2), transparent 70%);
+        }
+
+        .hero-content {
+            max-width: 650px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, var(--text-light), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--text-muted);
+            margin-bottom: 32px;
+            max-width: 550px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 40px;
+        }
+
+        .stat {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .hero-visual {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 45%;
+            max-width: 500px;
+        }
+
+        .card-visual {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(107, 47, 191, 0.3);
+            transform: rotate(5deg);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .card-chip {
+            width: 40px;
+            height: 30px;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            border-radius: 5px;
+        }
+
+        .card-logo {
+            color: var(--text-light);
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .card-number {
+            font-size: 22px;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            font-family: monospace;
+        }
+
+        .card-details {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .card-holder, .card-expiry {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+        }
+
+        .card-name, .card-date {
+            font-size: 16px;
+        }
+
+        /* Features Section */
+        .section {
+            padding: 100px 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-size: 36px;
+            margin-bottom: 16px;
+            color: var(--text-light);
+        }
+
+        .section-subtitle {
+            font-size: 18px;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border-radius: var(--border-radius);
+            padding: 32px;
+            transition: var(--transition);
+            border: 1px solid rgba(107, 47, 191, 0.2);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+            border-color: var(--primary-light);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            font-size: 24px;
+        }
+
+        .feature-title {
+            font-size: 20px;
+            margin-bottom: 16px;
+            color: var(--text-light);
+        }
+
+        .feature-desc {
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .feature-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+
+        .feature-link:hover {
+            gap: 12px;
+        }
+
+        /* Products Section */
+        .products {
+            background: linear-gradient(to bottom, var(--bg-dark), var(--primary-dark));
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .product-card {
+            background: var(--bg-card);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            transition: var(--transition);
+            border: 1px solid rgba(107, 47, 191, 0.2);
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .product-image {
+            height: 180px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: white;
+        }
+
+        .product-content {
+            padding: 24px;
+        }
+
+        .product-title {
+            font-size: 20px;
+            margin-bottom: 12px;
+            color: var(--text-light);
+        }
+
+        .product-desc {
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            background: var(--primary-dark);
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .testimonial-card {
+            background: var(--bg-card);
+            border-radius: var(--border-radius);
+            padding: 32px;
+            border: 1px solid rgba(107, 47, 191, 0.2);
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 24px;
+            color: var(--text-light);
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-light), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .author-info h4 {
+            color: var(--text-light);
+            margin-bottom: 4px;
+        }
+
+        .author-info p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* CTA Section */
+        .cta {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            text-align: center;
+            padding: 80px 0;
+        }
+
+        .cta h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: var(--text-light);
+        }
+
+        .cta p {
+            font-size: 18px;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 32px;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-dark);
+            padding: 80px 0 40px;
+            border-top: 1px solid rgba(107, 47, 191, 0.2);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .footer-col h3 {
+            color: var(--text-light);
+            margin-bottom: 24px;
+            font-size: 18px;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            color: var(--text-light);
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background: var(--primary-light);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 40px;
+            border-top: 1px solid rgba(107, 47, 191, 0.2);
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero-visual {
+                display: none;
+            }
+            
+            .hero-content {
+                max-width: 100%;
+                text-align: center;
+            }
+            
+            .hero-buttons {
+                justify-content: center;
+            }
+            
+            .hero-stats {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .auth-buttons {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .section-title {
+                font-size: 28px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 280px;
+            }
+            
+            .hero-stats {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <a href="#" class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-university"></i>
+                </div>
+                First Atlantic Bank
+            </a>
+            
+            <nav>
+                <ul>
+                    <li><a href="#">Personal</a></li>
+                    <li><a href="#">Business</a></li>
+                    <li><a href="#">Wealth</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Support</a></li>
+                </ul>
+            </nav>
+            
+            <div class="auth-buttons">
+                <button class="btn btn-outline">Sign In</button>
+                <button class="btn btn-primary">Open Account</button>
+            </div>
+            
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Banking designed for the digital age</h1>
+                <p>Experience financial freedom with our modern banking solutions. No hidden fees, powerful tools, and exceptional security.</p>
+                
+                <div class="hero-buttons">
+                    <button class="btn btn-primary">Open an Account</button>
+                    <button class="btn btn-outline">Learn More</button>
+                </div>
+                
+                <div class="hero-stats">
+                    <div class="stat">
+                        <div class="stat-value">2M+</div>
+                        <div class="stat-label">Happy Customers</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">$5B+</div>
+                        <div class="stat-label">Assets Managed</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">24/7</div>
+                        <div class="stat-label">Customer Support</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hero-visual">
+                <div class="card-visual">
+                    <div class="card-header">
+                        <div class="card-chip"></div>
+                        <div class="card-logo">First Atlantic</div>
+                    </div>
+                    <div class="card-number">••••  ••••  ••••  4289</div>
+                    <div class="card-details">
+                        <div class="card-holder">
+                            <div class="card-label">CARD HOLDER</div>
+                            <div class="card-name">Alex Johnson</div>
+                        </div>
+                        <div class="card-expiry">
+                            <div class="card-label">EXPIRES</div>
+                            <div class="card-date">05/28</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Why choose First Atlantic Bank?</h2>
+                <p class="section-subtitle">We're redefining what it means to bank in the modern world with features designed for your lifestyle.</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Advanced Security</h3>
+                    <p class="feature-desc">Your money is protected with bank-level encryption, biometric authentication, and real-time fraud monitoring.</p>
+                    <a href="#" class="feature-link">
+                        Learn more <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3 class="feature-title">Instant Transfers</h3>
+                    <p class="feature-desc">Send money to anyone, anywhere in seconds. No waiting, no hidden fees, just fast and secure transactions.</p>
+                    <a href="#" class="feature-link">
+                        Learn more <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-piggy-bank"></i>
+                    </div>
+                    <h3 class="feature-title">Smart Savings</h3>
+                    <p class="feature-desc">Automatically grow your savings with round-ups, goals, and competitive interest rates that work for you.</p>
+                    <a href="#" class="feature-link">
+                        Learn more <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="section products">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Our Financial Products</h2>
+                <p class="section-subtitle">From everyday banking to long-term investments, we have solutions for every stage of your financial journey.</p>
+            </div>
+            
+            <div class="products-grid">
+                <div class="product-card">
+                    <div class="product-image">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Everyday Banking</h3>
+                        <p class="product-desc">Checking and savings accounts with no monthly fees and premium benefits.</p>
+                        <button class="btn btn-outline">Explore</button>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="product-image">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Credit Cards</h3>
+                        <p class="product-desc">Rewards, cashback, and travel cards with competitive APRs and no annual fees.</p>
+                        <button class="btn btn-outline">Explore</button>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="product-image">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Investing</h3>
+                        <p class="product-desc">Build your wealth with personalized portfolios and expert guidance.</p>
+                        <button class="btn btn-outline">Explore</button>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="product-image">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Home Loans</h3>
+                        <p class="product-desc">Mortgage solutions with competitive rates and a simple application process.</p>
+                        <button class="btn btn-outline">Explore</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="section testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">What our customers say</h2>
+                <p class="section-subtitle">Don't just take our word for it. Here's what our community has to say about their experience.</p>
+            </div>
+            
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"Switching to First Atlantic Bank was the best financial decision I've made. The app is intuitive, and their customer service is exceptional."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">SJ</div>
+                        <div class="author-info">
+                            <h4>Sarah Johnson</h4>
+                            <p>Small Business Owner</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"I love how First Atlantic makes managing my finances so simple. The savings features have helped me reach my goals faster than I expected."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">MR</div>
+                        <div class="author-info">
+                            <h4>Michael Rodriguez</h4>
+                            <p>Software Engineer</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"As someone who travels frequently, First Atlantic's no foreign transaction fees and instant international transfers are a game-changer."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">AL</div>
+                        <div class="author-info">
+                            <h4>Amanda Lee</h4>
+                            <p>Marketing Consultant</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <h2>Ready to experience modern banking?</h2>
+            <p>Join over 2 million customers who trust First Atlantic Bank with their financial future.</p>
+            <button class="btn btn-primary">Open Your Account Today</button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>First Atlantic Bank</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 20px;">Banking for the digital age. Simple, secure, and designed for you.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Products</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Checking Accounts</a></li>
+                        <li><a href="#">Savings Accounts</a></li>
+                        <li><a href="#">Credit Cards</a></li>
+                        <li><a href="#">Investment Accounts</a></li>
+                        <li><a href="#">Loans</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Company</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Press</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Security</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2023 First Atlantic Bank. All rights reserved. FDIC insured.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple script for mobile menu toggle
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+            const nav = document.querySelector('nav');
+            nav.style.display = nav.style.display === 'block' ? 'none' : 'block';
+        });
+    </script>
+</body>
+</html>

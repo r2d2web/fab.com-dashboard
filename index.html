@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | First Atlantic Bank</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        :root {
+            --primary: #6B2FBF;
+            --primary-light: #8B5CF6;
+            --primary-dark: #4A1E8A;
+            --secondary: #FF6B9D;
+            --accent: #00B894;
+            --text-dark: #2D3748;
+            --text-light: #718096;
+            --bg-light: #F7FAFC;
+            --bg-white: #FFFFFF;
+            --bg-card: #FFFFFF;
+            --border: #E2E8F0;
+            --success: #00D4AA;
+            --warning: #FFB74D;
+            --danger: #FF6B6B;
+            --border-radius: 12px;
+            --transition: all 0.3s ease;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 260px;
+            background: var(--bg-white);
+            box-shadow: var(--shadow);
+            padding: 24px 0;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 22px;
+            color: var(--primary-dark);
+            text-decoration: none;
+            padding: 0 24px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo-icon {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .sidebar-nav {
+            padding: 24px 0;
+            flex-grow: 1;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 24px;
+            color: var(--text-dark);
+            text-decoration: none;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: rgba(107, 47, 191, 0.08);
+            color: var(--primary);
+            border-right: 3px solid var(--primary);
+        }
+
+        .nav-item i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .user-profile {
+            padding: 20px 24px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .user-info h3 {
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+
+        .user-info p {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            padding: 24px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            color: var(--text-dark);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: var(--bg-white);
+            border-radius: var(--border-radius);
+            padding: 10px 16px;
+            box-shadow: var(--shadow);
+            width: 300px;
+        }
+
+        .search-bar input {
+            border: none;
+            background: transparent;
+            margin-left: 10px;
+            width: 100%;
+            outline: none;
+            color: var(--text-dark);
+        }
+
+        .notification-btn {
+            background: var(--bg-white);
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .notification-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 8px;
+            height: 8px;
+            background: var(--secondary);
+            border-radius: 50%;
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+        }
+
+        /* Balance Card */
+        .balance-card {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: var(--border-radius);
+            padding: 32px;
+            color: white;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 24px;
+        }
+
+        .balance-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .balance-title {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .balance-amount {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .balance-change {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .balance-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            font-size: 14px;
+        }
+
+        .btn-light {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-light:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-white {
+            background: white;
+            color: var(--primary);
+        }
+
+        .btn-white:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        /* Cards Section */
+        .section {
+            margin-bottom: 32px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            color: var(--text-dark);
+        }
+
+        .section-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .card-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: rgba(107, 47, 191, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 20px;
+        }
+
+        .card-title {
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+        }
+
+        .card-amount {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .card-change {
+            font-size: 14px;
+            color: var(--success);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .card-change.negative {
+            color: var(--danger);
+        }
+
+        /* Transactions */
+        .transactions {
+            background: var(--bg-card);
+            border-radius: var(--border-radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .transaction-list {
+            list-style: none;
+        }
+
+        .transaction-item {
+            display: flex;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .transaction-item:last-child {
+            border-bottom: none;
+        }
+
+        .transaction-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            font-size: 18px;
+        }
+
+        .transaction-icon.shopping {
+            background: rgba(255, 107, 157, 0.1);
+            color: var(--secondary);
+        }
+
+        .transaction-icon.food {
+            background: rgba(0, 184, 148, 0.1);
+            color: var(--accent);
+        }
+
+        .transaction-icon.transfer {
+            background: rgba(107, 47, 191, 0.1);
+            color: var(--primary);
+        }
+
+        .transaction-icon.salary {
+            background: rgba(255, 183, 77, 0.1);
+            color: var(--warning);
+        }
+
+        .transaction-details {
+            flex: 1;
+        }
+
+        .transaction-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .transaction-date {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        .transaction-amount {
+            font-weight: 700;
+        }
+
+        .transaction-amount.positive {
+            color: var(--success);
+        }
+
+        .transaction-amount.negative {
+            color: var(--danger);
+        }
+
+        /* Recent Activity */
+        .activity-list {
+            list-style: none;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(107, 47, 191, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            color: var(--primary);
+            font-size: 14px;
+        }
+
+        .activity-details {
+            flex: 1;
+        }
+
+        .activity-text {
+            margin-bottom: 4px;
+        }
+
+        .activity-time {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .action-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-card);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+            cursor: pointer;
+            text-decoration: none;
+            color: var(--text-dark);
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+            background: rgba(107, 47, 191, 0.05);
+        }
+
+        .action-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: rgba(107, 47, 191, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            color: var(--primary);
+            font-size: 20px;
+        }
+
+        .action-text {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        /* Popup Styles */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .popup-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .popup {
+            background: var(--bg-white);
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 500px;
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-20px);
+            transition: var(--transition);
+            overflow: hidden;
+        }
+
+        .popup-overlay.active .popup {
+            transform: translateY(0);
+        }
+
+        .popup-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .popup-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .popup-close {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .popup-close:hover {
+            color: var(--primary);
+        }
+
+        .popup-body {
+            padding: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            transition: var(--transition);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(107, 47, 191, 0.1);
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            background: var(--bg-white);
+            cursor: pointer;
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(107, 47, 191, 0.1);
+        }
+
+        .recipient-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .recipient-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: rgba(107, 47, 191, 0.05);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .recipient-item:hover {
+            background: rgba(107, 47, 191, 0.1);
+        }
+
+        .recipient-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .recipient-name {
+            font-weight: 500;
+        }
+
+        .popup-footer {
+            padding: 16px 24px 24px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .btn-secondary {
+            background: var(--bg-light);
+            color: var(--text-dark);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        /* Account Hold Message */
+        .account-hold-message {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .account-hold-icon {
+            font-size: 48px;
+            color: var(--danger);
+            margin-bottom: 16px;
+        }
+
+        .account-hold-title {
+            color: var(--danger);
+            margin-bottom: 12px;
+        }
+
+        .account-hold-description {
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+
+        /* Insights Styles */
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .insight-card {
+            background: var(--bg-light);
+            border-radius: var(--border-radius);
+            padding: 16px;
+            text-align: center;
+        }
+
+        .insight-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .insight-label {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        .chart-placeholder {
+            height: 200px;
+            background: var(--bg-light);
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            color: var(--text-light);
+        }
+
+        /* All Transactions Styles */
+        .transactions-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .transactions-filters {
+            display: flex;
+            gap: 12px;
+        }
+
+        .filter-select {
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: var(--border-radius);
+            background: var(--bg-white);
+            color: var(--text-dark);
+        }
+
+        .transaction-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .transaction-table th,
+        .transaction-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .transaction-table th {
+            font-weight: 600;
+            color: var(--text-dark);
+            background: var(--bg-light);
+        }
+
+        .transaction-table tr:hover {
+            background: var(--bg-light);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 80px;
+            }
+            
+            .sidebar .logo-text, .nav-item span, .user-info {
+                display: none;
+            }
+            
+            .main-content {
+                margin-left: 80px;
+            }
+            
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+            
+            .search-bar {
+                width: 100%;
+            }
+            
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .insights-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .balance-actions {
+                flex-direction: column;
+            }
+            
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+            
+            .popup {
+                width: 95%;
+            }
+            
+            .transactions-filters {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a href="#" class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-university"></i>
+            </div>
+            <span class="logo-text">First Atlantic Bank</span>
+        </a>
+        
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-item active">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-wallet"></i>
+                <span>Accounts</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-exchange-alt"></i>
+                <span>Transactions</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-credit-card"></i>
+                <span>Cards</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-chart-line"></i>
+                <span>Investments</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-piggy-bank"></i>
+                <span>Savings</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+        </nav>
+        
+        <div class="user-profile">
+            <div class="user-avatar">DK</div>
+            <div class="user-info">
+                <h3>David Kwakye</h3>
+                <p>Premium Member</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="header">
+            <h1>Dashboard</h1>
+            <div class="header-actions">
+                <div class="search-bar">
+                    <i class="fas fa-search" style="color: var(--text-light);"></i>
+                    <input type="text" placeholder="Search transactions, bills...">
+                </div>
+                <button class="notification-btn">
+                    <i class="fas fa-bell"></i>
+                    <div class="notification-badge"></div>
+                </button>
+            </div>
+        </div>
+
+        <!-- Balance Overview -->
+        <div class="balance-card">
+            <div class="balance-header">
+                <div class="balance-title">Total Balance</div>
+                <div class="balance-change">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>+2.5% from last month</span>
+                </div>
+            </div>
+            <div class="balance-amount">GH₵ 4,212.75</div>
+            <div class="balance-actions">
+                <button class="btn btn-light" id="addMoneyBtn">
+                    <i class="fas fa-plus"></i> Add Money
+                </button>
+                <button class="btn btn-white" id="sendMoneyBtn">
+                    <i class="fas fa-paper-plane"></i> Send Money
+                </button>
+                <button class="btn btn-light" id="insightsBtn">
+                    <i class="fas fa-chart-bar"></i> Insights
+                </button>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="left-column">
+                <!-- Recent Transactions -->
+                <div class="section">
+                    <div class="section-header">
+                        <h2 class="section-title">Recent Transactions</h2>
+                        <a href="#" class="section-link" id="seeAllTransactionsBtn">
+                            See All <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </div>
+                    <div class="transactions">
+                        <ul class="transaction-list">
+                            <li class="transaction-item">
+                                <div class="transaction-icon transfer">
+                                    <i class="fas fa-exchange-alt"></i>
+                                </div>
+                                <div class="transaction-details">
+                                    <div class="transaction-name">MobileMoney MTNGH Transfer</div>
+                                    <div class="transaction-date">Nov 14 • 9:17 PM</div>
+                                </div>
+                                <div class="transaction-amount negative">-GH₵300.00</div>
+                            </li>
+                            <li class="transaction-item">
+                                <div class="transaction-icon transfer">
+                                    <i class="fas fa-exchange-alt"></i>
+                                </div>
+                                <div class="transaction-details">
+                                    <div class="transaction-name">MobileMoney MTNGH Transfer</div>
+                                    <div class="transaction-date">Oct 28 • 4:15 PM</div>
+                                </div>
+                                <div class="transaction-amount negative">-GH₵150.00</div>
+                            </li>                            
+                            
+                            <li class="transaction-item">
+                                <div class="transaction-icon transfer">
+                                    <i class="fas fa-exchange-alt"></i>
+                                </div>
+                                <div class="transaction-details">
+                                    <div class="transaction-name">Transfer from David Ansong Kwa...</div>
+                                    <div class="transaction-date">Oct 25 • 11:15 AM</div>
+                                </div>
+                                <div class="transaction-amount positive">+GH₵ 250.00</div>
+                            </li>
+                            <li class="transaction-item">
+                                <div class="transaction-icon salary">
+                                    <i class="fas fa-building"></i>
+                                </div>
+                                <div class="transaction-details">
+                                    <div class="transaction-name">Salary Deposit</div>
+                                    <div class="transaction-date">Oct 22 • 9:00 AM</div>
+                                </div>
+                                <div class="transaction-amount positive">+GH₵902.00</div>
+                            </li>
+                            <li class="transaction-item">
+                                <div class="transaction-icon transfer">
+                                    <i class="fas fa-exchange-alt"></i>
+                                </div>
+                                <div class="transaction-details">
+                                    <div class="transaction-name">Transfer to Sarah</div>
+                                    <div class="transaction-date">Oct 22 • 2:32 PM</div>
+                                </div>
+                                <div class="transaction-amount negative">-GH₵10.00</div>
+                            </li>
+                            
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-column">
+                <!-- Quick Actions -->
+                <div class="section">
+                    <h2 class="section-title">Quick Actions</h2>
+                    <div class="quick-actions">
+                        <a href="#" class="action-btn" id="quickSendMoneyBtn">
+                            <div class="action-icon">
+                                <i class="fas fa-paper-plane"></i>
+                            </div>
+                            <div class="action-text">Send Money</div>
+                        </a>
+                        <a href="#" class="action-btn">
+                            <div class="action-icon">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <div class="action-text">Pay Bills</div>
+                        </a>
+                        <a href="#" class="action-btn">
+                            <div class="action-icon">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                            <div class="action-text">Top Up</div>
+                        </a>
+                        <a href="#" class="action-btn">
+                            <div class="action-icon">
+                                <i class="fas fa-chart-pie"></i>
+                            </div>
+                            <div class="action-text">Budget</div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="section">
+                    <div class="section-header">
+                        <h2 class="section-title">Recent Activity</h2>
+                        <a href="#" class="section-link">
+                            View All <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </div>
+                    <div class="transactions">
+                        <ul class="activity-list">
+                            <li class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fas fa-shield-alt"></i>
+                                </div>
+                                <div class="activity-details">
+                                    <div class="activity-text">New login from Chrome on Windows</div>
+                                    <div class="activity-time">2 hours ago</div>
+                                </div>
+                            </li>
+                            <li class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fas fa-credit-card"></i>
+                                </div>
+                                <div class="activity-details">
+                                    <div class="activity-text">Card payment to Netflix</div>
+                                    <div class="activity-time">Yesterday, 8:15 PM</div>
+                                </div>
+                            </li>
+                            <li class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fas fa-exchange-alt"></i>
+                                </div>
+                                <div class="activity-details">
+                                    <div class="activity-text">Transfer to Savings Account</div>
+                                    <div class="activity-time">Oct 12, 10:30 AM</div>
+                                </div>
+                            </li>
+                            <li class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fas fa-user-plus"></i>
+                                </div>
+                                <div class="activity-details">
+                                    <div class="activity-text">New payee added: John Smith</div>
+                                    <div class="activity-time">Oct 10, 3:45 PM</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Send Money Popup -->
+    <div class="popup-overlay" id="sendMoneyPopup">
+        <div class="popup">
+            <div class="popup-header">
+                <h2 class="popup-title">Send Money</h2>
+                <button class="popup-close" id="closeSendMoneyPopup">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="popup-body">
+                <div class="account-hold-message">
+                    <div class="account-hold-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h1 class="account-hold-title">This account is on hold</h1>
+                    <p class="account-hold-description">All transactions are withheld. Please contact customer support for assistance.</p>
+                </div>
+            </div>
+            <div class="popup-footer">
+                <button class="btn btn-secondary" id="cancelSendMoney" style="opacity: 20%;">Cancel</button>
+                <button class="btn btn-primary" id="confirmSendMoney" style="opacity: 20%;">Send Money</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Money Popup -->
+    <div class="popup-overlay" id="addMoneyPopup">
+        <div class="popup">
+            <div class="popup-header">
+                <h2 class="popup-title">Add Money</h2>
+                <button class="popup-close" id="closeAddMoneyPopup">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="popup-body">
+                <div class="account-hold-message">
+                    <div class="account-hold-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h1 class="account-hold-title">This account is on hold</h1>
+                    <p class="account-hold-description">All transactions are withheld. Please contact customer support for assistance.</p>
+                </div>
+            </div>
+            <div class="popup-footer">
+                <button class="btn btn-secondary" id="cancelAddMoney" style="opacity: 20%;">Cancel</button>
+                <button class="btn btn-primary" id="confirmAddMoney" style="opacity: 20%;">Add Money</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Insights Popup -->
+    <div class="popup-overlay" id="insightsPopup">
+        <div class="popup">
+            <div class="popup-header">
+                <h2 class="popup-title">Financial Insights</h2>
+                <button class="popup-close" id="closeInsightsPopup">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="popup-body">
+                <div class="account-hold-message">
+                    <div class="account-hold-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h1 class="account-hold-title">This account is on hold</h1>
+                    <p class="account-hold-description">All transactions are withheld. Please contact customer support for assistance.</p>
+                </div>
+            </div>
+            <div class="popup-footer">
+                <button class="btn btn-secondary" id="cancelInsights">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- All Transactions Popup -->
+    <div class="popup-overlay" id="allTransactionsPopup">
+        <div class="popup" style="max-width: 800px;">
+            <div class="popup-header">
+                <h2 class="popup-title">All Transactions</h2>
+                <button class="popup-close" id="closeAllTransactionsPopup">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="popup-body">
+                <div class="account-hold-message">
+                    <div class="account-hold-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h1 class="account-hold-title">This account is on hold</h1>
+                    <p class="account-hold-description">All transactions are withheld. Please contact customer support for assistance.</p>
+                </div>
+            </div>
+            <div class="popup-footer">
+                <button class="btn btn-secondary" id="cancelAllTransactions">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple script for interactive elements
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add active state to navigation items
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    navItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            // Notification button interaction
+            const notificationBtn = document.querySelector('.notification-btn');
+            notificationBtn.addEventListener('click', function() {
+                this.querySelector('.notification-badge').style.display = 'none';
+            });
+            
+            // Generic popup functions
+            function openPopup(popupId) {
+                const popup = document.getElementById(popupId);
+                popup.classList.add('active');
+                document.body.style.overflow = 'hidden'; // Prevent scrolling
+            }
+            
+            function closePopup(popupId) {
+                const popup = document.getElementById(popupId);
+                popup.classList.remove('active');
+                document.body.style.overflow = ''; // Restore scrolling
+            }
+            
+            // Send Money Popup functionality
+            const sendMoneyBtn = document.getElementById('sendMoneyBtn');
+            const quickSendMoneyBtn = document.getElementById('quickSendMoneyBtn');
+            const closeSendMoneyPopup = document.getElementById('closeSendMoneyPopup');
+            const cancelSendMoney = document.getElementById('cancelSendMoney');
+            
+            sendMoneyBtn.addEventListener('click', () => openPopup('sendMoneyPopup'));
+            quickSendMoneyBtn.addEventListener('click', () => openPopup('sendMoneyPopup'));
+            closeSendMoneyPopup.addEventListener('click', () => closePopup('sendMoneyPopup'));
+            cancelSendMoney.addEventListener('click', () => closePopup('sendMoneyPopup'));
+            
+            // Add Money Popup functionality
+            const addMoneyBtn = document.getElementById('addMoneyBtn');
+            const closeAddMoneyPopup = document.getElementById('closeAddMoneyPopup');
+            const cancelAddMoney = document.getElementById('cancelAddMoney');
+            
+            addMoneyBtn.addEventListener('click', () => openPopup('addMoneyPopup'));
+            closeAddMoneyPopup.addEventListener('click', () => closePopup('addMoneyPopup'));
+            cancelAddMoney.addEventListener('click', () => closePopup('addMoneyPopup'));
+            
+            // Insights Popup functionality
+            const insightsBtn = document.getElementById('insightsBtn');
+            const closeInsightsPopup = document.getElementById('closeInsightsPopup');
+            const cancelInsights = document.getElementById('cancelInsights');
+            
+            insightsBtn.addEventListener('click', () => openPopup('insightsPopup'));
+            closeInsightsPopup.addEventListener('click', () => closePopup('insightsPopup'));
+            cancelInsights.addEventListener('click', () => closePopup('insightsPopup'));
+            
+            // All Transactions Popup functionality
+            const seeAllTransactionsBtn = document.getElementById('seeAllTransactionsBtn');
+            const closeAllTransactionsPopup = document.getElementById('closeAllTransactionsPopup');
+            const cancelAllTransactions = document.getElementById('cancelAllTransactions');
+            
+            seeAllTransactionsBtn.addEventListener('click', () => openPopup('allTransactionsPopup'));
+            closeAllTransactionsPopup.addEventListener('click', () => closePopup('allTransactionsPopup'));
+            cancelAllTransactions.addEventListener('click', () => closePopup('allTransactionsPopup'));
+            
+            // Close popups when clicking outside
+            document.querySelectorAll('.popup-overlay').forEach(overlay => {
+                overlay.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        const popupId = this.id;
+                        closePopup(popupId);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
